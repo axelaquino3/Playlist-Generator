@@ -1,0 +1,392 @@
+{
+    "albums": {
+        "items": [
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e026ca5c90113b30c3c43ffb8f4",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d000048516ca5c90113b30c3c43ffb8f4",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b2736ca5c90113b30c3c43ffb8f4",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2002
+                    },
+                    "name": "The Eminem Show",
+                    "uri": "spotify:album:2cWBwpqMsDJC1ZUwz813lo"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e02dbb3dd82da45b7d7f31b1b42",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d00004851dbb3dd82da45b7d7f31b1b42",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b273dbb3dd82da45b7d7f31b1b42",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2000
+                    },
+                    "name": "The Marshall Mathers LP",
+                    "uri": "spotify:album:6t7956yu5zYf5A829XRiHC"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e02506c4cc93e5a6234164125e1",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d00004851506c4cc93e5a6234164125e1",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b273506c4cc93e5a6234164125e1",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2009
+                    },
+                    "name": "Relapse: Refill",
+                    "uri": "spotify:album:7MZzYkbHL9Tk3O6WeD4Z0Z"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e02c08d5fa5c0f1a834acef5100",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d00004851c08d5fa5c0f1a834acef5100",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b273c08d5fa5c0f1a834acef5100",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2010
+                    },
+                    "name": "Recovery",
+                    "uri": "spotify:album:47BiFcV59TQi2s9SkBo2pb"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e02fd3d919c262a979c9b1347c4",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d00004851fd3d919c262a979c9b1347c4",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b273fd3d919c262a979c9b1347c4",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2023
+                    },
+                    "name": "The Marshall Mathers LP2 (Expanded Edition)",
+                    "uri": "spotify:album:5EUgcfO5OWxnniHR3QYFcK"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e022f44aec83b20e40f3baef73c",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d000048512f44aec83b20e40f3baef73c",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b2732f44aec83b20e40f3baef73c",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2020
+                    },
+                    "name": "Music To Be Murdered By",
+                    "uri": "spotify:album:4otkd9As6YaxxEkIjXPiZ6"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e02726d48d93d02e1271774f023",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d00004851726d48d93d02e1271774f023",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b273726d48d93d02e1271774f023",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2004
+                    },
+                    "name": "Encore (Deluxe Version)",
+                    "uri": "spotify:album:1kTlYbs28MXw7hwO0NLYif"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e029bef45ee387f274ea3198c55",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d000048519bef45ee387f274ea3198c55",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b2739bef45ee387f274ea3198c55",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 1999
+                    },
+                    "name": "The Slim Shady LP",
+                    "uri": "spotify:album:0vE6mttRTBXRe9rKghyr1l"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e02dee6b58d35215322626b5701",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d00004851dee6b58d35215322626b5701",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b273dee6b58d35215322626b5701",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2017
+                    },
+                    "name": "Revival",
+                    "uri": "spotify:album:0U6ldwLBEMkwgfQRY4V6D2"
+                }
+            },
+            {
+                "data": {
+                    "artists": {
+                        "items": [
+                            {
+                                "profile": {
+                                    "name": "Eminem"
+                                },
+                                "uri": "spotify:artist:7dGJo4pcD2V6oG8kP0tJRR"
+                            }
+                        ]
+                    },
+                    "coverArt": {
+                        "sources": [
+                            {
+                                "height": 300,
+                                "url": "https://i.scdn.co/image/ab67616d00001e02e4073def0c03a91e3fceaf73",
+                                "width": 300
+                            },
+                            {
+                                "height": 64,
+                                "url": "https://i.scdn.co/image/ab67616d00004851e4073def0c03a91e3fceaf73",
+                                "width": 64
+                            },
+                            {
+                                "height": 640,
+                                "url": "https://i.scdn.co/image/ab67616d0000b273e4073def0c03a91e3fceaf73",
+                                "width": 640
+                            }
+                        ]
+                    },
+                    "date": {
+                        "year": 2018
+                    },
+                    "name": "Kamikaze",
+                    "uri": "spotify:album:3HNnxK7NgLXbDoxRZxNWiR"
+                }
+            }
+        ],
+        "pagingInfo": {
+            "limit": 10,
+            "nextOffset": 10
+        },
+        "totalCount": 511
+    },
+    "query": "eminem"
+}

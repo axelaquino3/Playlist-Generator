@@ -164,60 +164,26 @@ int main() {
 
     // vector to store your playlist
     vector<string> playlistOfSongs = {};
+    // string artistName = "eminem";
+    string artistName;
+    string artistalbum;
+
+
+    cout << "Welcome to Playlist Generator" << endl;
+    cout << "What artist's albums would you like to see?" << endl;
+    cin >> artistName; 
+
+    getArtistAlbums(artistName);
+
+    cout << "What album would you like to pick?" << endl;
+        // getAlbumsSongs("2cWBwpqMsDJC1ZUwz813lo");
+
+
     
-    // // use this like a file handler when accessing files
-    //     CURL *curl;
-    
-    // // use this variable to store return values from curl API functions
-    //     CURLcode result;
-
-        string artistName = "eminem";
-
-    // // This funciton returns a curl handle and stored it in curl
-    // // We use this to create and manage the request
-    //     curl = curl_easy_init();
-
-    // // curl can easily fail and return NULL, so check for it
-    //     if (curl == NULL) {
-            
-    //         // "fprintf" outputs a formated standard error that the http request failed
-    //         // If it fails you'll hit this block and return a -1 as an error status
-
-    //             fprintf(stderr, "HTTP requeset failed\n");
-    //             return -1;
-    //     }
-    
-    // // this function is used to set all the options for the HTTP request
-    // // needs 3 arguments, handle, constant(option we're setting), and the url for the request
-    //     curl_easy_setopt(curl, CURLOPT_URL, "https://www.google.com" );
-
-    // // this performs the request, function returns a curl code, then store it in variable
-    // // the curl code returned should be CURLE_OK
-    //     result = curl_easy_perform(curl);
-
-    // // check if the request went wrong
-    //     if (result != CURLE_OK) {
-
-            
-    //         // output a formatted standard error that the http request failed. "%s" is a format specifer and is subsituted by w
-    //         // return -1 as an error status
-    //             fprintf(stderr, "Error: %s\n", curl_easy_strerror(result));
-    //             return -1;
-    //     }
-
-    // // this functions cleans up the curl sessionsn 
-    //     curl_easy_cleanup(curl);
-
-
-
-
     // makes a get request to search
         // getArtistAlbums(artistName);
         // getArtistAlbums("kanye");
         // getAlbumsSongs("2cWBwpqMsDJC1ZUwz813lo");
-
-
-
 
         // album = getArtistAlbum(artist)
         // song = getAlbumSong(album)

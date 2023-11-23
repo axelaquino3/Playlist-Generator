@@ -6,37 +6,36 @@
 #include <array>
 #include <nlohmann/json.hpp>
 #include <vector>
+#include <map>
 
 using namespace std;
 using namespace nlohmann;
 
+map<string, string> albumCache;
 
-void parser(string input) {
+json parser(string input) {
 
+    json object; 
+    
     try {
         auto j3 = json::parse(input);
-        json object = j3;
-        // cout << object << endl;
-        // for (int i = 0; i < sizeof(object); i++) {
-        //     cout << object["albums"]["items"][i]["data"]["name"] << endl;
-        // }
-        
-        for (const auto& album : object["albums"]["items"]) {
-
-            if (album.contains("data") && album["data"].contains("name")) {
-
-                cout << "Album name: " << album["data"]["name"] << endl;
-            
-            } else {
-
-            cout << "Album missing name or data property" << endl;
-            
-            }
-        }
+        object = j3;
     } catch (json::exception& e) {
         cout << "Error parsing JSON: " << e.what() << endl;
     }
 
+    return object;
+
+}
+
+string extractAlbumID(const string &fullID) {
+    size_t pos = fullID.rfind(':');
+
+    if (pos != string::npos){
+        return fullID.substr(pos + 1);
+    } else {
+        return  ""; // Return an empty string if ":" is not found
+    }
 }
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
@@ -87,19 +86,85 @@ void getArtistAlbums(string artistName) {
         delete[] url;
     }
 
-    parser(readBuffer);
+
+    // if (albumCache.find(artistName) != albumCache.end()) {
+    //     cout << "Retrieving album for " << artistName << " from cache..." << endl;
+    //     parser(albumCache[artistName].to_string());
+    //     return;
+    // }
+
+    json object = parser(readBuffer);    
+
+    for (const auto& album : object["albums"]["items"]) {
+
+        if (album.contains("data")) {
+
+            cout << "Album name: " << album["data"]["name"] << endl;
+            // cout << "Album uri: " << extractAlbumID(album["data"]["uri"]) << endl;
+
+            albumCache[album["data"]["name"]] = extractAlbumID(album["data"]["uri"]);
+            
+            //mutable array where you store it into an object
+        
+            /*
+            // this would be outside the for loop
+            
+            let array = []
+            //this part is inside the loop
+            let object = {
+                id: album[data][id],
+                name: album[data][name],
+            }
+
+            array.push(object)
+            */
+
+            //loop through the array and find which name user input and check that user input matches the name of the object and get id
+
+            //outside of loop initialize variable ex: let id;
+            // loop throguh make if statement (if array[i][name] == userinput) set id = array[i][id] 
+        
+        } else {
+
+        cout << "Album missing name or data property" << endl;
+        
+        }
+
+
+        // for (auto it = albumCache.begin(); it != albumCache.end(); it++) {
+        //     cout << "key:" << it-> first << "value: " << it-> second << endl;
+        // }
+
+    }
+    
 
     string album_id;
 
-    auto j3 = json::parse(readBuffer);
-    json object = j3;
+    // findAlbumID(album_id, readBuffer);
 
-   for(auto& album : object["albums"]["items"]) {
-    if( album.contains("data") && album["data"].contains("uri")) {
-        cout << "Album uri: " << album["data"]["uri"] << endl;
-    }
-   }
+//     auto j3 = json::parse(readBuffer);
+//     json object = j3;
+
+//    for(auto& album : object["albums"]["items"]) {
+//     if( album.contains("data") && album["data"].contains("uri")) {
+//         cout << "Album uri: " << album["data"]["uri"] << endl;
+//     }
+//    }
  
+}
+
+string findAlbumID(const string& userInputAlbumName, const json& albumsData) {
+    for (const auto& album : albumsData["albums"]["items"]) {
+        if (album.contains("data") && album["data"].contains("uri")) {
+            string albumName = album["data"]["name"].get<string>();
+            if(albumName == userInputAlbumName) {
+                if (album.contains("data") && album["data"].contains("id")) {
+                    return album["data"]["id"].get<string>();
+                }
+            }
+        }
+    }
+    return "";
 }
 
 void getAlbumsSongs(string album_id) {
@@ -164,25 +229,56 @@ int main() {
 
     // vector to store your playlist
     vector<string> playlistOfSongs = {};
-    // string artistName = "eminem";
     string artistName;
-    string artistalbum;
+    string chosenAlbum;
+
+    cout << "*** Welcome to Playlist Generator ***" << endl;
+
+    while(true) {
+        cout << "What artist's albums would you like to see?" << endl;
+        cin >> artistName; 
+        
+        if(artistName == "exit") {
+            cout << "Creating your playlist!" << endl;
+            break;
+        }
+        
+        // Fetch album of the artist
+        getArtistAlbums(artistName);
+
+        cout << "Enter the name of the album you want to pick (Type 'back' to choose another artist):" << endl;
+        string chosenAlbum;
+        cin.ignore(); // handles input buffer issues
+        getline(cin, chosenAlbum);
+
+        if(chosenAlbum == "back") {
+            // Go back to inputting artist name
+            continue;
+        }
+
+        // string chosenAlbumID; // = findAlbumID(chosenAlbum, )
+
+        // if(!chosenAlbumID.empty()) {
+        //     getAlbumsSongs(chosenAlbumID);
+        // } else {
+        //     cout << "Album not found." << endl;
+        // }
 
 
-    cout << "Welcome to Playlist Generator" << endl;
-    cout << "What artist's albums would you like to see?" << endl;
-    cin >> artistName; 
+        // cout << "hello" << endl;
+    }
 
-    getArtistAlbums(artistName);
+    
 
-    cout << "What album would you like to pick?" << endl;
-        // getAlbumsSongs("2cWBwpqMsDJC1ZUwz813lo");
+   
 
+    
 
     
     // makes a get request to search
         // getArtistAlbums(artistName);
         // getArtistAlbums("kanye");
+        
         // getAlbumsSongs("2cWBwpqMsDJC1ZUwz813lo");
 
         // album = getArtistAlbum(artist)

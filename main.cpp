@@ -38,6 +38,20 @@ string extractAlbumID(const string &fullID) {
     }
 }
 
+string findAlbumID(const string& userInputAlbumName, const json& albumsData) {
+    for (const auto& album : albumsData["albums"]["items"]) {
+        if (album.contains("data") && album["data"].contains("uri")) {
+            string albumName = album["data"]["name"].get<string>();
+            if(albumName == userInputAlbumName) {
+                if (album.contains("data") && album["data"].contains("id")) {
+                    return album["data"]["id"].get<string>();
+                }
+            }
+        }
+    }
+    return "";
+}
+
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     ((string*)userp)->append((char*)contents, size * nmemb);
     return size * nmemb;
@@ -151,20 +165,6 @@ void getArtistAlbums(string artistName) {
 //     }
 //    }
  
-}
-
-string findAlbumID(const string& userInputAlbumName, const json& albumsData) {
-    for (const auto& album : albumsData["albums"]["items"]) {
-        if (album.contains("data") && album["data"].contains("uri")) {
-            string albumName = album["data"]["name"].get<string>();
-            if(albumName == userInputAlbumName) {
-                if (album.contains("data") && album["data"].contains("id")) {
-                    return album["data"]["id"].get<string>();
-                }
-            }
-        }
-    }
-    return "";
 }
 
 void getAlbumsSongs(string album_id) {

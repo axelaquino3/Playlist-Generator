@@ -8,6 +8,10 @@
 #include <nlohmann/json.hpp>
 #include <vector>
 #include <map>
+#include <unistd.h>
+#include <cstdlib>
+
+
 
 using namespace std;
 using namespace nlohmann;
@@ -117,25 +121,6 @@ void getArtistAlbums(string artistName) {
 
             albumCache[album["data"]["name"]] = extractAlbumID(album["data"]["uri"]);
             
-            //mutable array where you store it into an object
-        
-            /*
-            // this would be outside the for loop
-            
-            let array = []
-            //this part is inside the loop
-            let object = {
-                id: album[data][id],
-                name: album[data][name],
-            }
-
-            array.push(object)
-            */
-
-            //loop through the array and find which name user input and check that user input matches the name of the object and get id
-
-            //outside of loop initialize variable ex: let id;
-            // loop throguh make if statement (if array[i][name] == userinput) set id = array[i][id] 
         
         } else {
 
@@ -237,17 +222,27 @@ int main() {
     cout << "*** Welcome to Playlist Generator ***" << endl;
 
     while(true) {
-        cout << "What artist's albums would you like to see?" << endl;
+        
+        cout << "What artist's albums would you like to see? (Type 'exit' to exit and create your playlist)" << endl;
         cin >> artistName; 
         
-        if(artistName == "exit") {
+        if (artistName == "exit") {
+            
             cout << "Creating your playlist!" << endl;
+            
+            sleep(1);
+            
+            for (const auto& song : playlistOfSongs) {
+                    cout << song << endl;
+                }
+
             break;
         }
         
+
         // Fetch album of the artist
+        system("clear");
         getArtistAlbums(artistName);
-        // system("clear");
 
         cout << "Enter the name of the album you want to pick (Type 'back' to choose another artist):" << endl;
         string chosenAlbum;
@@ -264,6 +259,7 @@ int main() {
         // cout << chosenAlbumID << endl;
 
         if(!chosenAlbumID.empty()) {
+            system("clear");
             getAlbumsSongs(chosenAlbumID);
         } else {
             cout << "Album not found." << endl;
@@ -277,39 +273,71 @@ int main() {
 
         addToPlaylist(chosenSong);
 
-
-        cout << "Would you like to see the songs in your playlist?" << endl;
+        cout << "Do you want to add more songs from this album?" << endl;
         cout << "Select y/n" << endl;
-        string answer;
+        string answer2;
+        getline(cin, answer2);
+        
+        if(answer2 == "y") {
+            
+            
+            while (true) {
 
-        getline(cin, answer);
+                system("clear");
+                getAlbumsSongs(chosenAlbumID);
 
-        if (answer == "y") {
-            for (const auto& song : playlistOfSongs) {
-                cout << song << endl;
+                cout << "Enter the song you would you like to add to your playlist" << endl;
+                string chosenSong;
+                // cin.ignore();
+                getline(cin, chosenSong);
+                addToPlaylist(chosenSong);
+
+                system("clear");
+                getAlbumsSongs(chosenAlbumID);
+
+
+                cout << "Do you want to add more songs from this album?" << endl;
+                cout << "Select y/n" << endl;
+                string answer3;
+                getline(cin, answer3);
+
+                if (answer3 == "y") {
+                
+                    continue;
+
+                } else if (answer3 == "n") {
+                    system("clear");
+                    break;
+                    
+                }
+
+                
+            }
+            
+        }
+
+        if (answer2 == "n") {
+            cout << "Would you like to see the songs in your playlist?" << endl;
+            cout << "Select y/n" << endl;
+            string answer;
+
+            getline(cin, answer);
+
+            if (answer == "y") {
+                system("clear");
+                for (const auto& song : playlistOfSongs) {
+                    cout << song << endl;
+                }
+
+            }
+
+            if (answer == "n") {
+                continue;
             }
         }
 
-        if (answer == "n") {
-            continue;
-        }
 
     }
 
-    
-
-   
-
-    
-
-    
-    // makes a get request to search
-        // getArtistAlbums(artistName);
-        // getArtistAlbums("kanye");
-        
-        // getAlbumsSongs("2cWBwpqMsDJC1ZUwz813lo");
-
-        // album = getArtistAlbum(artist)
-        // song = getAlbumSong(album)
 
 }

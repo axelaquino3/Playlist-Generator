@@ -15,6 +15,7 @@ using namespace std;
 using namespace nlohmann;
 
 map<string, string> albumCache;
+map<string, string> songCache;
 vector<string> playlistOfSongs;
 
 
@@ -108,16 +109,28 @@ void getArtistAlbums(string artistName) {
     //     return;
     // }
 
-    json object = parser(readBuffer);    
+    json object = parser(readBuffer);
 
+    int index = 1;
     for (const auto& album : object["albums"]["items"]) {
 
         if (album.contains("data")) {
 
-            cout << "Album name: " << album["data"]["name"] << endl;
+
+            //// Get Album Data using Album Name as keys
+
+            // cout << "Album name: " << album["data"]["name"] << endl;
+            // albumCache[album["data"]["name"]] = extractAlbumID(album["data"]["uri"]);
+            
+
+            // Get Album Data using Numbers as keys
+            cout << index << ") " << album["data"]["name"] << endl;
+            string indexStr = to_string(index);
+            albumCache[indexStr] = extractAlbumID(album["data"]["uri"]);
+            index++;
+
             // cout << "Album uri: " << extractAlbumID(album["data"]["uri"]) << endl;
 
-            albumCache[album["data"]["name"]] = extractAlbumID(album["data"]["uri"]);
             
         
         } else {
@@ -128,10 +141,14 @@ void getArtistAlbums(string artistName) {
 
 
         // for (auto it = albumCache.begin(); it != albumCache.end(); it++) {
-        //     cout << "key:" << it-> first << "value: " << it-> second << endl;
+        //     cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
         // }
 
     }
+
+    // for(int i = 0; i < object["albums"]["items"].size(); i++) {
+    //     albumCache[i + 1] = extractAlbumID(object["data"]["uri"]) << endl;
+    // }
     
 
     string album_id;
@@ -193,21 +210,27 @@ void getAlbumsSongs(string album_id) {
         delete[] url;
     }
 
-    // parser(readBuffer);
-
     auto j3 = json::parse(readBuffer);
     json object = j3;
 
+   int index = 1; 
+   
    for (auto& song : object["data"]["album"]["tracks"]["items"]) {
     if (song.contains("track") && song["track"].contains("name")) {
-        cout << "Song name: " << song["track"]["name"] << endl;
+        cout << index << ") " << song["track"]["name"] << endl;
+        index + 1;
+        string indexStr = to_string(index);
+        songCache[indexStr] = song["track"]["name"];
+        index++;
     }
    }
 
 }
 
 void addToPlaylist(string songTitle) {
-    playlistOfSongs.push_back(songTitle);
+
+    playlistOfSongs.push_back(songCache[songTitle]);
+      
 }
 
 
@@ -233,7 +256,7 @@ int main() {
         
         if (artistName == "exit") {
             
-            cout << "Creating your playlist!" << endl;
+            cout << "✨ Creating your playlist! ✨" << endl;
             
             sleep(1);
             
@@ -249,6 +272,11 @@ int main() {
         system("clear");
         cout << "💿 \033[1;4m  Album Titles \033[0m 💿\n" << endl; 
         getArtistAlbums(artistName);
+
+        // for (auto it = albumCache.begin(); it != albumCache.end(); it++) {
+        //     cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
+        // }
+
 
         cout << "Enter the name of the album you want to pick (Type 'back' to choose another artist):" << endl;
         getline(cin, chosenAlbum);
@@ -277,6 +305,10 @@ int main() {
 
         addToPlaylist(chosenSong);
 
+        // for (auto it = songCache.begin(); it != songCache.end(); it++) {
+        //     cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
+        // }
+
         cout << "Do you want to add more songs from this album?" << endl;
         cout << "Select y/n" << endl;
         string answer2;
@@ -287,8 +319,8 @@ int main() {
             
             while (true) {
 
-                system("clear");
-                getAlbumsSongs(chosenAlbumID);
+                // system("clear");
+                // getAlbumsSongs(chosenAlbumID);
 
                 cout << "Enter the song you would you like to add to your playlist" << endl;
                 string chosenSong;
@@ -329,6 +361,9 @@ int main() {
 
             if (answer == "y") {
                 system("clear");
+
+                cout << "Playlist" << endl;
+
                 for (const auto& song : playlistOfSongs) {
                     cout << song << endl;
                 }

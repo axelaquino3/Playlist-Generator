@@ -9,9 +9,7 @@
 #include <vector>
 #include <map>
 #include <unistd.h>
-#include <cstdlib>
-
-
+// #include <cstdlib>
 
 using namespace std;
 using namespace nlohmann;
@@ -124,7 +122,7 @@ void getArtistAlbums(string artistName) {
         
         } else {
 
-        cout << "Album missing name or data property" << endl;
+            cout << "Album missing name or data property" << endl;
         
         }
 
@@ -200,8 +198,8 @@ void getAlbumsSongs(string album_id) {
     auto j3 = json::parse(readBuffer);
     json object = j3;
 
-   for(auto& song : object["data"]["album"]["tracks"]["items"]) {
-    if( song.contains("track") && song["track"].contains("name")) {
+   for (auto& song : object["data"]["album"]["tracks"]["items"]) {
+    if (song.contains("track") && song["track"].contains("name")) {
         cout << "Song name: " << song["track"]["name"] << endl;
     }
    }
@@ -215,16 +213,23 @@ void addToPlaylist(string songTitle) {
 
 int main() {
 
-    // vector to store your playlist
     string artistName;
     string chosenAlbum;
+    string chosenAlbumID;
 
-    cout << "*** Welcome to Playlist Generator ***" << endl;
+    cout << "\033[1m *** 🎶 Welcome to Playlist Generator 🎶 *** \033[0m" << endl;
 
     while(true) {
         
         cout << "What artist's albums would you like to see? (Type 'exit' to exit and create your playlist)" << endl;
-        cin >> artistName; 
+        cout << "Enter Artist Name: ";
+        getline(cin, artistName); 
+
+        if (artistName == "" || artistName.empty()) {
+            system("clear");
+            cout << "\033[33;1m ⚠ Please Input Artist Name!!! ⚠ \033[0m" << endl;
+            continue;
+        } 
         
         if (artistName == "exit") {
             
@@ -237,27 +242,26 @@ int main() {
                 }
 
             break;
-        }
+        }  
         
 
         // Fetch album of the artist
         system("clear");
+        cout << "💿 \033[1;4m  Album Titles \033[0m 💿\n" << endl; 
         getArtistAlbums(artistName);
 
         cout << "Enter the name of the album you want to pick (Type 'back' to choose another artist):" << endl;
-        string chosenAlbum;
-        cin.ignore(); // handles input buffer issues
         getline(cin, chosenAlbum);
 
         if(chosenAlbum == "back") {
             // Go back to inputting artist name
+            system("clear");
             continue;
         }
 
-        string chosenAlbumID = findAlbumID(chosenAlbum); // = findAlbumID(chosenAlbum, )
+        chosenAlbumID = findAlbumID(chosenAlbum); 
 
-        // cout << chosenAlbumID << endl;
-
+        
         if(!chosenAlbumID.empty()) {
             system("clear");
             getAlbumsSongs(chosenAlbumID);
@@ -266,7 +270,7 @@ int main() {
         }
 
 
-        cout << "Enter the song you would you like to add to your playlist" << endl;
+        cout << "Enter the song you would you like to add to your playlist: ";
         string chosenSong;
         // cin.ignore();
         getline(cin, chosenSong);

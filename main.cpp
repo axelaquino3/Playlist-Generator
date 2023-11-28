@@ -214,8 +214,7 @@ void getAlbumsSongs(string album_id) {
    int index = 1; 
    
    for (auto& song : object["data"]["album"]["tracks"]["items"]) {
-    string songName;
-    string songArtist;
+    
     
     // if ((song.contains("track") && song["track"].contains("name")) && (song.contains("track") && song["track"]["artists"]["items"]["profile"].contains("name"))) {
     //     string songName = song["track"]["name"];
@@ -228,22 +227,28 @@ void getAlbumsSongs(string album_id) {
     //     index++;
     // }
 
-    if (song.contains("track") && song["track"].contains("name")) {
-        songName = song["track"]["name"];   
-    }
-
-    if (song.contains("track") && song["track"]["artists"]["items"].contains("profile")) {
-        songArtist = song["track"]["artists"]["items"]["profile"]["name"];
-    }
-
-
-    cout << index << ") " << songName << songArtist << endl;
-        index + 1;
-        string indexStr = to_string(index);
-        songCache[indexStr] = songArtist + " " + songName;
-        index++;
+        if (song.contains("track") && song["track"].contains("name")) {
+            string songName;
+            string songArtist = "";
+            
+            songName = song["track"]["name"];  
+            
+            if (song["track"]["artists"].contains("items") && !song["track"]["artists"]["items"].empty()) {
+            
+                songArtist = song["track"]["artists"]["items"][0]["profile"]["name"];
+            
+            }
+        
+            cout << index << ") " << songArtist << " - " << songName << endl;
+            index + 1;
+            string indexStr = to_string(index);
+            songCache[indexStr] = "Artist: " + songArtist + "\n" + "Song: " + songName + "\n" + "Album: ";
+            index++;
+    
+        }
    }
 
+ 
 }
 
 void addToPlaylist(string songTitle) {
@@ -324,9 +329,9 @@ int main() {
 
         addToPlaylist(chosenSong);
 
-        for (auto it = songCache.begin(); it != songCache.end(); it++) {
-            cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
-        }
+        // for (auto it = songCache.begin(); it != songCache.end(); it++) {
+        //     cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
+        // }
 
         cout << "Do you want to add more songs from this album?" << endl;
         cout << "Select y/n" << endl;

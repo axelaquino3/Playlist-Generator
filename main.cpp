@@ -17,6 +17,8 @@ using namespace nlohmann;
 map<string, string> albumCache;
 map<string, string> songCache;
 vector<string> playlistOfSongs;
+string albumTitle;
+
 
 
 json parser(string input) {
@@ -111,6 +113,8 @@ void getArtistAlbums(string artistName) {
 
     json object = parser(readBuffer);
 
+   
+
     int index = 1;
     for (const auto& album : object["albums"]["items"]) {
 
@@ -124,6 +128,7 @@ void getArtistAlbums(string artistName) {
 
             // Get Album Data using Numbers as keys
             cout << index << ") " << album["data"]["name"] << endl;
+            albumTitle = album["data"]["name"];
             string indexStr = to_string(index);
             albumCache[indexStr] = extractAlbumID(album["data"]["uri"]);
             index++;
@@ -148,6 +153,10 @@ void getArtistAlbums(string artistName) {
     // for(int i = 0; i < object["albums"]["items"].size(); i++) {
     //     albumCache[i + 1] = extractAlbumID(object["data"]["uri"]) << endl;
     // }
+
+     if (object["albums"]["items"].contains("data")){
+     albumTitle = object["albums"]["items"]["data"]["name"];
+   }
     
 
     string album_id;
@@ -212,6 +221,7 @@ void getAlbumsSongs(string album_id) {
     json object = j3;
 
    int index = 1; 
+
    
    for (auto& song : object["data"]["album"]["tracks"]["items"]) {
     
@@ -242,7 +252,7 @@ void getAlbumsSongs(string album_id) {
             cout << index << ") " << songArtist << " - " << songName << endl;
             index + 1;
             string indexStr = to_string(index);
-            songCache[indexStr] = "Artist: " + songArtist + "\n" + "Song: " + songName + "\n" + "Album: ";
+            songCache[indexStr] = "Artist: " + songArtist + "\n" + "Song: " + songName + "\n" + "Album: " + albumTitle + "\n";
             index++;
     
         }
@@ -267,7 +277,7 @@ int main() {
     cout << "\033[1m *** 🎶 Welcome to Playlist Generator 🎶 *** \033[0m" << endl; // bolds the text
 
     while(true) {
-        
+        // system("clear");
         cout << "What artist's albums would you like to see? (Type 'exit' to exit and create your playlist)" << endl;
         cout << "Enter Artist Name: ";
         getline(cin, artistName); 
@@ -280,7 +290,7 @@ int main() {
         
         if (artistName == "exit") {
             
-            cout << "✨ Creating Your Playlist! ✨" << endl;
+            cout << "✨ Creating Your Playlist! ✨\n" << endl;
             
             sleep(1);
             
@@ -318,7 +328,9 @@ int main() {
             system("clear");
             getAlbumsSongs(chosenAlbumID);
         } else {
+            system("clear");
             cout << "Album not found." << endl;
+            continue;
         }
 
 
@@ -376,6 +388,7 @@ int main() {
         }
 
         if (answer2 == "n") {
+            system("clear");
             cout << "Would you like to see the songs in your playlist?" << endl;
             cout << "Select y/n" << endl;
             string answer;
@@ -396,6 +409,7 @@ int main() {
             }
 
             if (answer == "n") {
+                system("clear");
                 continue;
             }
         }

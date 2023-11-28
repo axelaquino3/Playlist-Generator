@@ -118,7 +118,6 @@ void getArtistAlbums(string artistName) {
 
 
             //// Get Album Data using Album Name as keys
-
             // cout << "Album name: " << album["data"]["name"] << endl;
             // albumCache[album["data"]["name"]] = extractAlbumID(album["data"]["uri"]);
             
@@ -202,8 +201,7 @@ void getAlbumsSongs(string album_id) {
     if (curlRes != CURLE_OK) {
         fprintf(stderr, "Error: %s\n", curl_easy_strerror(curlRes));
     } else {
-         // Process the response data (handle the response here)
-
+         // Process the response data (handle the response here
         // Cleanup resources
         curl_easy_cleanup(curlReq);
         curl_slist_free_all(headers);
@@ -216,13 +214,34 @@ void getAlbumsSongs(string album_id) {
    int index = 1; 
    
    for (auto& song : object["data"]["album"]["tracks"]["items"]) {
+    string songName;
+    string songArtist;
+    
+    // if ((song.contains("track") && song["track"].contains("name")) && (song.contains("track") && song["track"]["artists"]["items"]["profile"].contains("name"))) {
+    //     string songName = song["track"]["name"];
+    //     string songArtist = song["track"]["artists"]["items"]["profile"]["name"];
+        
+    //     cout << index << ") " << songArtist  << songName << endl;
+    //     index + 1;
+    //     string indexStr = to_string(index);
+    //     songCache[indexStr] = song["track"]["name"];
+    //     index++;
+    // }
+
     if (song.contains("track") && song["track"].contains("name")) {
-        cout << index << ") " << song["track"]["name"] << endl;
+        string songName = song["track"]["name"];   
+    }
+
+    if (song.contains("track") && song["track"]["artists"]["items"]["profile"].contains("name")) {
+        songArtist = song["track"]["artists"]["items"]["profile"]["name"];
+    }
+
+
+    cout << index << ") " << songArtist << songName << endl;
         index + 1;
         string indexStr = to_string(index);
         songCache[indexStr] = song["track"]["name"];
         index++;
-    }
    }
 
 }
@@ -240,7 +259,7 @@ int main() {
     string chosenAlbum;
     string chosenAlbumID;
 
-    cout << "\033[1m *** 🎶 Welcome to Playlist Generator 🎶 *** \033[0m" << endl;
+    cout << "\033[1m *** 🎶 Welcome to Playlist Generator 🎶 *** \033[0m" << endl; // bolds the text
 
     while(true) {
         
@@ -250,13 +269,13 @@ int main() {
 
         if (artistName == "" || artistName.empty()) {
             system("clear");
-            cout << "\033[33;1m ⚠ Please Input Artist Name!!! ⚠ \033[0m" << endl;
+            cout << "\033[33;1m ⚠ Please Input Artist Name!!! ⚠ \033[0m" << endl; // bolds and adds yellow color to text
             continue;
         } 
         
         if (artistName == "exit") {
             
-            cout << "✨ Creating your playlist! ✨" << endl;
+            cout << "✨ Creating Your Playlist! ✨" << endl;
             
             sleep(1);
             
@@ -324,13 +343,12 @@ int main() {
 
                 cout << "Enter the song you would you like to add to your playlist" << endl;
                 string chosenSong;
-                // cin.ignore();
+                
                 getline(cin, chosenSong);
                 addToPlaylist(chosenSong);
 
                 system("clear");
                 getAlbumsSongs(chosenAlbumID);
-
 
                 cout << "Do you want to add more songs from this album?" << endl;
                 cout << "Select y/n" << endl;
@@ -362,10 +380,12 @@ int main() {
             if (answer == "y") {
                 system("clear");
 
-                cout << "Playlist" << endl;
+                cout << "\033[1m 🎵 Playlist  \033[0m" << endl;
 
                 for (const auto& song : playlistOfSongs) {
+                
                     cout << song << endl;
+
                 }
 
             }

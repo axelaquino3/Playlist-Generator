@@ -229,18 +229,18 @@ void getAlbumsSongs(string album_id) {
     // }
 
     if (song.contains("track") && song["track"].contains("name")) {
-        string songName = song["track"]["name"];   
+        songName = song["track"]["name"];   
     }
 
-    if (song.contains("track") && song["track"]["artists"]["items"]["profile"].contains("name")) {
+    if (song.contains("track") && song["track"]["artists"]["items"].contains("profile")) {
         songArtist = song["track"]["artists"]["items"]["profile"]["name"];
     }
 
 
-    cout << index << ") " << songArtist << songName << endl;
+    cout << index << ") " << songName << songArtist << endl;
         index + 1;
         string indexStr = to_string(index);
-        songCache[indexStr] = song["track"]["name"];
+        songCache[indexStr] = songName;
         index++;
    }
 

@@ -240,7 +240,7 @@ void getAlbumsSongs(string album_id) {
     cout << index << ") " << songName << songArtist << endl;
         index + 1;
         string indexStr = to_string(index);
-        songCache[indexStr] = songName;
+        songCache[indexStr] = songArtist + " " + songName;
         index++;
    }
 
@@ -324,9 +324,9 @@ int main() {
 
         addToPlaylist(chosenSong);
 
-        // for (auto it = songCache.begin(); it != songCache.end(); it++) {
-        //     cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
-        // }
+        for (auto it = songCache.begin(); it != songCache.end(); it++) {
+            cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
+        }
 
         cout << "Do you want to add more songs from this album?" << endl;
         cout << "Select y/n" << endl;

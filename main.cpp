@@ -9,10 +9,11 @@
 #include <vector>
 #include <map>
 #include <unistd.h>
-// #include <cstdlib>
+#include <cstdlib>
 
 using namespace std;
 using namespace nlohmann;
+using json = nlohmann::json;
 
 map<string, string> albumCache;
 map<string, string> songCache;
@@ -23,7 +24,7 @@ string albumTitle;
 
 json parser(string input) {
 
-    json object; 
+    json object = json::object();
     
     try {
         auto j3 = json::parse(input);
@@ -105,15 +106,8 @@ void getArtistAlbums(string artistName) {
     }
 
 
-    // if (albumCache.find(artistName) != albumCache.end()) {
-    //     cout << "Retrieving album for " << artistName << " from cache..." << endl;
-    //     parser(albumCache[artistName].to_string());
-    //     return;
-    // }
-
     json object = parser(readBuffer);
 
-   
 
     int index = 1;
     for (const auto& album : object["albums"]["items"]) {
@@ -135,42 +129,19 @@ void getArtistAlbums(string artistName) {
 
             // cout << "Album uri: " << extractAlbumID(album["data"]["uri"]) << endl;
 
-            
-        
         } else {
 
             cout << "Album missing name or data property" << endl;
         
         }
 
-
-        // for (auto it = albumCache.begin(); it != albumCache.end(); it++) {
-        //     cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
-        // }
-
     }
 
-    // for(int i = 0; i < object["albums"]["items"].size(); i++) {
-    //     albumCache[i + 1] = extractAlbumID(object["data"]["uri"]) << endl;
-    // }
-
      if (object["albums"]["items"].contains("data")){
+
      albumTitle = object["albums"]["items"]["data"]["name"];
+
    }
-    
-
-    string album_id;
-
-    // findAlbumID(album_id, readBuffer);
-
-//     auto j3 = json::parse(readBuffer);
-//     json object = j3;
-
-//    for(auto& album : object["albums"]["items"]) {
-//     if( album.contains("data") && album["data"].contains("uri")) {
-//         cout << "Album uri: " << album["data"]["uri"] << endl;
-//     }
-//    }
  
 }
 
@@ -226,17 +197,6 @@ void getAlbumsSongs(string album_id) {
    for (auto& song : object["data"]["album"]["tracks"]["items"]) {
     
     
-    // if ((song.contains("track") && song["track"].contains("name")) && (song.contains("track") && song["track"]["artists"]["items"]["profile"].contains("name"))) {
-    //     string songName = song["track"]["name"];
-    //     string songArtist = song["track"]["artists"]["items"]["profile"]["name"];
-        
-    //     cout << index << ") " << songArtist  << songName << endl;
-    //     index + 1;
-    //     string indexStr = to_string(index);
-    //     songCache[indexStr] = song["track"]["name"];
-    //     index++;
-    // }
-
         if (song.contains("track") && song["track"].contains("name")) {
             string songName;
             string songArtist = "";
@@ -277,7 +237,7 @@ int main() {
     cout << "\033[1m *** 🎶 Welcome to Playlist Generator 🎶 *** \033[0m" << endl; // bolds the text
 
     while(true) {
-        // system("clear");
+
         cout << "What artist's albums would you like to see? (Type 'exit' to exit and create your playlist)" << endl;
         cout << "Enter Artist Name: ";
         getline(cin, artistName); 
@@ -307,11 +267,6 @@ int main() {
         cout << "💿 \033[1;4m  Album Titles \033[0m 💿\n" << endl; 
         getArtistAlbums(artistName);
 
-        // for (auto it = albumCache.begin(); it != albumCache.end(); it++) {
-        //     cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
-        // }
-
-
         cout << "Enter the name of the album you want to pick (Type 'back' to choose another artist):" << endl;
         getline(cin, chosenAlbum);
 
@@ -340,10 +295,6 @@ int main() {
         getline(cin, chosenSong);
 
         addToPlaylist(chosenSong);
-
-        // for (auto it = songCache.begin(); it != songCache.end(); it++) {
-        //     cout << "key: " << it-> first << "\n" << "value: " << it-> second << endl;
-        // }
 
         cout << "Do you want to add more songs from this album?" << endl;
         cout << "Select y/n" << endl;
@@ -398,7 +349,7 @@ int main() {
             if (answer == "y") {
                 system("clear");
 
-                cout << "\033[1m 🎵 Playlist  \033[0m" << endl;
+                cout << "\033[1m 🎵 Playlist 🎵  \033[0m" << endl;
 
                 for (const auto& song : playlistOfSongs) {
                 

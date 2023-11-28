@@ -1,73 +1,5 @@
-int main() {
-
-    // vector to store your playlist
-    vector<string> playlistOfSongs = {};
-    
-    // // use this like a file handler when accessing files
-    //     CURL *curl;
-    
-    // // use this variable to store return values from curl API functions
-    //     CURLcode result;
-
-        string artistName = "eminem";
-
-    // // This funciton returns a curl handle and stored it in curl
-    // // We use this to create and manage the request
-    //     curl = curl_easy_init();
-
-    // // curl can easily fail and return NULL, so check for it
-    //     if (curl == NULL) {
-            
-    //         // "fprintf" outputs a formated standard error that the http request failed
-    //         // If it fails you'll hit this block and return a -1 as an error status
-
-    //             fprintf(stderr, "HTTP requeset failed\n");
-    //             return -1;
-    //     }
-    
-    // // this function is used to set all the options for the HTTP request
-    // // needs 3 arguments, handle, constant(option we're setting), and the url for the request
-    //     curl_easy_setopt(curl, CURLOPT_URL, "https://www.google.com" );
-
-    // // this performs the request, function returns a curl code, then store it in variable
-    // // the curl code returned should be CURLE_OK
-    //     result = curl_easy_perform(curl);
-
-    // // check if the request went wrong
-    //     if (result != CURLE_OK) {
-
-            
-    //         // output a formatted standard error that the http request failed. "%s" is a format specifer and is subsituted by w
-    //         // return -1 as an error status
-    //             fprintf(stderr, "Error: %s\n", curl_easy_strerror(result));
-    //             return -1;
-    //     }
-
-    // // this functions cleans up the curl sessionsn 
-    //     curl_easy_cleanup(curl);
-
-
-
-
-    // makes a get request to search
-        getArtistAlbums(artistName);
-        // getArtistAlbums("kanye");
-        getAlbumsSongs("2cWBwpqMsDJC1ZUwz813lo");
-
-
-
-
-        // album = getArtistAlbum(artist)
-        // song = getAlbumSong(album)
-
-}
-
-
-
-
-****** current working code 11/22: *******
-
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <curl/curl.h>
 #include <cstring>
@@ -75,57 +7,54 @@ int main() {
 #include <array>
 #include <nlohmann/json.hpp>
 #include <vector>
+#include <map>
+#include <unistd.h>
+// #include <cstdlib>
 
 using namespace std;
 using namespace nlohmann;
+using json = nlohmann::json;
+
+map<string, string> albumCache;
+map<string, string> songCache;
+vector<string> playlistOfSongs;
+string albumTitle;
 
 
-void parser(string input) {
 
+json parser(string input) {
+
+    json object = json::object();
+    
     try {
         auto j3 = json::parse(input);
-        json object = j3;
-        // cout << object << endl;
-        // for (int i = 0; i < sizeof(object); i++) {
-        //     cout << object["albums"]["items"][i]["data"]["name"] << endl;
-        // }
-        
-        for (const auto& album : object["albums"]["items"]) {
-
-            if (album.contains("data") && album["data"].contains("name")) {
-
-                cout << "Album name: " << album["data"]["name"] << endl;
-                
-                //mutable array where you store it into an object
-            
-                /*
-                // this would be outside the for loop
-                
-                let array = []
-                //this part is inside the loop
-                let object = {
-                    id: album[data][id],
-                    name: album[data][name],
-                }
-
-                array.push(object)
-                */
-
-               //loop through the array and find which name user input and check that user input matches the name of the object and get id
-
-               //outside of loop initialize variable ex: let id;
-               // loop throguh make if statement (if array[i][name] == userinput) set id = array[i][id] 
-            
-            } else {
-
-            cout << "Album missing name or data property" << endl;
-            
-            }
-        }
+        object = j3;
     } catch (json::exception& e) {
         cout << "Error parsing JSON: " << e.what() << endl;
     }
 
+    return object;
+
+}
+
+string extractAlbumID(const string &fullID) {
+    size_t pos = fullID.rfind(':');
+
+    if (pos != string::npos){
+        return fullID.substr(pos + 1);
+    } else {
+        return  ""; // Return an empty string if ":" is not found
+    }
+}
+
+string findAlbumID(string& userInputAlbumName) {
+   for (auto it = albumCache.begin(); it != albumCache.end(); it++) {
+            if (it-> first == userInputAlbumName) {
+                return it-> second;
+            }
+            // cout << "key:" << it-> first << "value: " << it-> second << endl;
+        }
+    return "";
 }
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
@@ -176,35 +105,44 @@ void getArtistAlbums(string artistName) {
         delete[] url;
     }
 
-    parser(readBuffer);
 
-    string album_id;
+    json object = parser(readBuffer);
 
-    // findAlbumID(album_id, readBuffer);
 
-//     auto j3 = json::parse(readBuffer);
-//     json object = j3;
+    int index = 1;
+    for (const auto& album : object["albums"]["items"]) {
 
-//    for(auto& album : object["albums"]["items"]) {
-//     if( album.contains("data") && album["data"].contains("uri")) {
-//         cout << "Album uri: " << album["data"]["uri"] << endl;
-//     }
-//    }
- 
-}
+        if (album.contains("data")) {
 
-string findAlbumID(const string& userInputAlbumName, const json& albumsData) {
-    for (const auto& album : albumsData["albums"]["items"]) {
-        if (album.contains("data") && album["data"].contains("name")) {
-            string albumName = album["data"]["name"].get<string>();
-            if(albumName == userInputAlbumName) {
-                if (album.contains("data") && album["data"].contains("id")) {
-                    return album["data"]["id"].get<string>();
-                }
-            }
+
+            //// Get Album Data using Album Name as keys
+            // cout << "Album name: " << album["data"]["name"] << endl;
+            // albumCache[album["data"]["name"]] = extractAlbumID(album["data"]["uri"]);
+            
+
+            // Get Album Data using Numbers as keys
+            cout << index << ") " << album["data"]["name"] << endl;
+            albumTitle = album["data"]["name"];
+            string indexStr = to_string(index);
+            albumCache[indexStr] = extractAlbumID(album["data"]["uri"]);
+            index++;
+
+            // cout << "Album uri: " << extractAlbumID(album["data"]["uri"]) << endl;
+
+        } else {
+
+            cout << "Album missing name or data property" << endl;
+        
         }
+
     }
-    return "";
+
+     if (object["albums"]["items"].contains("data")){
+
+     albumTitle = object["albums"]["items"]["data"]["name"];
+
+   }
+ 
 }
 
 void getAlbumsSongs(string album_id) {
@@ -243,86 +181,192 @@ void getAlbumsSongs(string album_id) {
     if (curlRes != CURLE_OK) {
         fprintf(stderr, "Error: %s\n", curl_easy_strerror(curlRes));
     } else {
-         // Process the response data (handle the response here)
-
+         // Process the response data (handle the response here
         // Cleanup resources
         curl_easy_cleanup(curlReq);
         curl_slist_free_all(headers);
         delete[] url;
     }
 
-    // parser(readBuffer);
-
     auto j3 = json::parse(readBuffer);
     json object = j3;
 
-   for(auto& song : object["data"]["album"]["tracks"]["items"]) {
-    if( song.contains("track") && song["track"].contains("name")) {
-        cout << "Song name: " << song["track"]["name"] << endl;
-    }
+   int index = 1; 
+
+   
+   for (auto& song : object["data"]["album"]["tracks"]["items"]) {
+    
+    
+        if (song.contains("track") && song["track"].contains("name")) {
+            string songName;
+            string songArtist = "";
+            
+            songName = song["track"]["name"];  
+            
+            if (song["track"]["artists"].contains("items") && !song["track"]["artists"]["items"].empty()) {
+            
+                songArtist = song["track"]["artists"]["items"][0]["profile"]["name"];
+            
+            }
+        
+            cout << index << ") " << songArtist << " - " << songName << endl;
+            index + 1;
+            string indexStr = to_string(index);
+            songCache[indexStr] = "Artist: " + songArtist + "\n" + "Song: " + songName + "\n" + "Album: " + albumTitle + "\n";
+            index++;
+    
+        }
    }
 
+ 
+}
+
+void addToPlaylist(string songTitle) {
+
+    playlistOfSongs.push_back(songCache[songTitle]);
+      
 }
 
 
 int main() {
 
-    // vector to store your playlist
-    vector<string> playlistOfSongs = {};
     string artistName;
     string chosenAlbum;
+    string chosenAlbumID;
 
-
-    cout << "*** Welcome to Playlist Generator ***" << endl;
+    cout << "\033[1m *** 🎶 Welcome to Playlist Generator 🎶 *** \033[0m" << endl; // bolds the text
 
     while(true) {
-        cout << "What artist's albums would you like to see?" << endl;
-        cin >> artistName; 
+
+        cout << "What artist's albums would you like to see? (Type 'exit' to exit and create your playlist)" << endl;
+        cout << "Enter Artist Name: ";
+        getline(cin, artistName); 
+
+        if (artistName == "" || artistName.empty()) {
+            system("clear");
+            cout << "\033[33;1m ⚠ Please Input Artist Name!!! ⚠ \033[0m" << endl; // bolds and adds yellow color to text
+            continue;
+        } 
         
-        if(artistName == "exit") {
-            cout << "Creating your playlist!" << endl;
+        if (artistName == "exit") {
+            
+            cout << "✨ Creating Your Playlist! ✨\n" << endl;
+            
+            sleep(1);
+            
+            for (const auto& song : playlistOfSongs) {
+                    cout << song << endl;
+                }
+
             break;
-        }
+        }  
         
+
         // Fetch album of the artist
+        system("clear");
+        cout << "💿 \033[1;4m  Album Titles \033[0m 💿\n" << endl; 
         getArtistAlbums(artistName);
 
         cout << "Enter the name of the album you want to pick (Type 'back' to choose another artist):" << endl;
-        string chosenAlbum;
-        cin.ignore(); // handles input buffer issues
         getline(cin, chosenAlbum);
 
         if(chosenAlbum == "back") {
             // Go back to inputting artist name
+            system("clear");
             continue;
         }
 
-        // string chosenAlbumID; // = findAlbumID(chosenAlbum, )
+        chosenAlbumID = findAlbumID(chosenAlbum); 
 
-        // if(!chosenAlbumID.empty()) {
-        //     getAlbumsSongs(chosenAlbumID);
-        // } else {
-        //     cout << "Album not found." << endl;
-        // }
+        
+        if(!chosenAlbumID.empty()) {
+            system("clear");
+            getAlbumsSongs(chosenAlbumID);
+        } else {
+            system("clear");
+            cout << "Album not found." << endl;
+            continue;
+        }
 
 
-        // cout << "hello" << endl;
+        cout << "Enter the song you would you like to add to your playlist: ";
+        string chosenSong;
+        // cin.ignore();
+        getline(cin, chosenSong);
+
+        addToPlaylist(chosenSong);
+
+        cout << "Do you want to add more songs from this album?" << endl;
+        cout << "Select y/n" << endl;
+        string answer2;
+        getline(cin, answer2);
+        
+        if(answer2 == "y") {
+            
+            
+            while (true) {
+
+                // system("clear");
+                // getAlbumsSongs(chosenAlbumID);
+
+                cout << "Enter the song you would you like to add to your playlist" << endl;
+                string chosenSong;
+                
+                getline(cin, chosenSong);
+                addToPlaylist(chosenSong);
+
+                system("clear");
+                getAlbumsSongs(chosenAlbumID);
+
+                cout << "Do you want to add more songs from this album?" << endl;
+                cout << "Select y/n" << endl;
+                string answer3;
+                getline(cin, answer3);
+
+                if (answer3 == "y") {
+                
+                    continue;
+
+                } else if (answer3 == "n") {
+                    system("clear");
+                    break;
+                    
+                }
+
+                
+            }
+            
+        }
+
+        if (answer2 == "n") {
+            system("clear");
+            cout << "Would you like to see the songs in your playlist?" << endl;
+            cout << "Select y/n" << endl;
+            string answer;
+
+            getline(cin, answer);
+
+            if (answer == "y") {
+                system("clear");
+
+                cout << "\033[1m 🎵 Playlist  \033[0m" << endl;
+
+                for (const auto& song : playlistOfSongs) {
+                
+                    cout << song << endl;
+
+                }
+
+            }
+
+            if (answer == "n") {
+                system("clear");
+                continue;
+            }
+        }
+
+
     }
 
-    
-
-   
-
-    
-
-    
-    // makes a get request to search
-        // getArtistAlbums(artistName);
-        // getArtistAlbums("kanye");
-        
-        // getAlbumsSongs("2cWBwpqMsDJC1ZUwz813lo");
-
-        // album = getArtistAlbum(artist)
-        // song = getAlbumSong(album)
 
 }

@@ -16,6 +16,7 @@ using namespace nlohmann;
 using json = nlohmann::json;
 
 map<string, string> albumCache;
+map<string, string> albumTitleCache;
 map<string, string> songCache;
 vector<string> playlistOfSongs;
 string albumTitle;
@@ -125,6 +126,7 @@ void getArtistAlbums(string artistName) {
             albumTitle = album["data"]["name"];
             string indexStr = to_string(index);
             albumCache[indexStr] = extractAlbumID(album["data"]["uri"]);
+            albumTitleCache[indexStr] = albumTitle;
             index++;
 
             // cout << "Album uri: " << extractAlbumID(album["data"]["uri"]) << endl;
@@ -138,14 +140,14 @@ void getArtistAlbums(string artistName) {
     }
 
      if (object["albums"]["items"].contains("data")){
-
-     albumTitle = object["albums"]["items"]["data"]["name"];
+        
+        albumTitle = object["albums"]["items"]["data"]["name"];
 
    }
  
 }
 
-void getAlbumsSongs(string album_id) {
+void getAlbumsSongs(string album_id, const string& albumTitle) {
     CURL *curlReq = curl_easy_init();
     CURLcode curlRes;
     string readBuffer;
@@ -278,10 +280,12 @@ int main() {
 
         chosenAlbumID = findAlbumID(chosenAlbum); 
 
+        string selectedAlbumTitle = chosenAlbum;
+    
         
         if(!chosenAlbumID.empty()) {
             system("clear");
-            getAlbumsSongs(chosenAlbumID);
+            getAlbumsSongs(chosenAlbumID, albumTitleCache[selectedAlbumTitle]);
         } else {
             system("clear");
             cout << "Album not found." << endl;
@@ -316,7 +320,7 @@ int main() {
                 addToPlaylist(chosenSong);
 
                 system("clear");
-                getAlbumsSongs(chosenAlbumID);
+                getAlbumsSongs(chosenAlbumID, albumCache[selectedAlbumTitle]);
 
                 cout << "Do you want to add more songs from this album?" << endl;
                 cout << "Select y/n" << endl;

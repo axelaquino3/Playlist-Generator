@@ -285,6 +285,7 @@ int main() {
         
         if(!chosenAlbumID.empty()) {
             system("clear");
+            cout << "🎵 \033[1;4m  Song Titles \033[0m 🎵\n" << endl;
             getAlbumsSongs(chosenAlbumID, albumTitleCache[selectedAlbumTitle]);
         } else {
             system("clear");
